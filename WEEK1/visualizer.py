@@ -16,5 +16,14 @@ END_YEAR = 2018
 # Global dictionary for the data
 data_dict = {str(key): [] for key in range(START_YEAR, END_YEAR)}
 
+#def writertest(self):
+
+
 if __name__ == "__main__":
-    print(data_dict)
+
+    with open(INPUT_CSV) as csvfile:
+        csv_data = csv.DictReader(csvfile)
+
+        for row in csv_data:
+            data_dict[row['Year']].append(float(row['Rating'])
+    print(csv_data)
