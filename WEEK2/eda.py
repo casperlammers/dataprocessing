@@ -46,9 +46,9 @@ def histogram(data):
     plt.hist(data["GDP ($ per capita) dollars"])
 
     # Give a title and label the axis
-    plt.title('GDP ($ per capita) dollars')
-    plt.xlabel('GDP')
-    plt.ylabel('# of Countries')
+    plt.title('Avarage GDP per capita')
+    plt.xlabel('GDP in dollars')
+    plt.ylabel('Number of Countries')
 
     # show the histogram
     plt.show()
@@ -61,8 +61,8 @@ def boxplot(data):
     plt.boxplot(data["Infant mortality (per 1000 births)"])
 
     # Give a title and label the axis
-    plt.title('Boxplotted Infant mortality')
-    plt.ylabel('# of Deaths')
+    plt.title('Infant mortality (per 1000 births)')
+    plt.ylabel('Infant mortality')
 
     # show the plot
     plt.show()
@@ -77,8 +77,8 @@ def scatterplot(data):
 
     # Give a title and label the axis
     plt.title("Scattered GDP per capita/Infant mortality")
-    plt.xlabel('GDP per capita')
-    plt.ylabel('Infant mortality')
+    plt.xlabel('GDP per capita in dollars')
+    plt.ylabel('Infant mortality (per 1000 births)')
 
     # show the plot
     plt.show()
