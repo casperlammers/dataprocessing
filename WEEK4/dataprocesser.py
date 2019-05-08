@@ -4,33 +4,27 @@ import json
 
 def data_from_csv(filename):
     """
-    Get data from csv file, apply dateconverter and set index & return
+    Get wanted columns from csv file, select wanted values and return dataset
     """
-    # Get 'date' and 'windspeed' from csv file
-    dataset = pd.read_csv(filename, usecols=['temperature', 'date'])
+    # # Get columns Location, Measure, Time and  Value from csv file
+    dataset = pd.read_csv(filename, usecols=['LOCATION', 'MEASURE', 'TIME', 'Value'])
 
-    # Apply dateconverter and set index to date
-    dataset['date'] = dataset['date'].apply(dateconverter)
-    dataset.set_index("date", inplace=True)
+    # select wanted data from datasets: Measure value: KTOE in year 2014
+    dataset = dataset.loc[dataset['MEASURE'] == 'KTOE']
+    dataset = dataset.loc[dataset['TIME'] == 2014]
+    dataset = dataset.loc[dataset['LOCATION'] != 'OECD']
+
+    # Drop USA (outlier) & sort&round values for visualisation purposes as its value is a lot higher and drop NaN values
+    dataset = dataset.dropna(subset=['Value']).drop(dataset['Value'].idxmax())
+    dataset['Value'] = dataset['Value'].round()
+    dataset.sort_values(['Value'], axis=0, ascending=True, inplace=True)
 
     return(dataset)
 
-#     """
-#     Insert '-' into given locations to dates for convenience & easier conversion
-#     later on in js
-#     """
-    x = str(date)
-    a = str(x[:4])
-    b = "-"
-    c = str(x[4:6])
-    d = "-"
-    e = str(x[6:])
-
-    return a + b + c + d + e
 
 if __name__ == "__main__":
     # Get data from input.csv via datafile
-    data = data_from_csv('test.csv')
+    data = data_from_csv('dataset.csv')
 
     # Data to JSON file
-    data.to_json("cleaned_file.json", orient="index")
+    data.to_json("cleaned_file.json", orient="values")
