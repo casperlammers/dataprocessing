@@ -1,0 +1,32 @@
+div.headertext {
+  text-align: left;
+  font-family: monospace;
+  color:  #800020;
+}
+.bars {
+  fill: black;
+}
+.bars:hover {
+  fill: grey;
+}
+
+.yaxis text {
+    font-family: monospace;
+    font-size: 10px;
+}
+.xaxis text {
+    font-family: monospace;
+    font-size: 10px;
+}
+
+.mousehover {
+  position: absolute;
+  display: none;
+  font-family: monospace;
+  min-width: 80px;
+  height: auto;
+  background: #D3D3D3;
+  border: 2px solid #800020;
+  padding: 1px;
+  text-align: center;
+}
