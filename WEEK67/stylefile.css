@@ -4,7 +4,7 @@ div.headertext {
   color:  #800020;
 }
 .bars {
-  fill: black;
+  fill: darkgreen;
 }
 .bars:hover {
   fill: grey;

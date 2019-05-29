@@ -1,52 +1,52 @@
 // // Set variabales to load in data from the jsonfile
-var jsonfile = "cleaned_file.json";
-var country_total = {};
-var country_per_year = {};
-
-// PIE CHART INVOEGEN MET KLEUREN OM VERSCHILLEN PER JAAR WEER TE LATEN GEVEN BIJ HOVER
+var jsonfile = "cleaned_file.json"
+var country_total = {}
+var country_per_year = {}
 
 // import the wanted data (Countries/country_totalvalue) from the json
 d3.json(jsonfile).then(function(data) {
+
   //Create counter to compute size of dataset for usage in next loop
   var key = 0, counter = 1;
   for(key in data) {
     if(data.hasOwnProperty(key)){
-      counter++;
+      counter++
     }
   }
-  // Make storagevalue to compute total value per country
-  // Make storagelist to add country_totalvalue per year to list with multiple values per country
-  // Store both ^ in country_per_year & country_total
+
+  // use previous generated counter to loop over dataset and store data in storagevalues
   for (var i = 0; i < (counter/5) - 1; i++){
-    var storagevalue = 0;
-    var storagelist = {};
-    var year = 2012;
+    // create storagevalues
+    var storagevalue = 0
+    var storagelist = {}
+    var year = 2012
+
+    // loop 5 times to get all 5 datapoints from 1 country
     for (var j = 0; j < 5; j++){
       storagevalue += data[(i * 5) +j]["Value"]
-      // storagelist.push(data[(i * 5) +j]["Value"])
       storagelist[year] = data[(i * 5) +j]["Value"]
       year += 1
     }
+
+    // add the combined values from 1 country to variables
     country_per_year[data[i*5]["LOCATION"]] = storagelist
     country_total[data[i*5]["LOCATION"]] = storagevalue
   }
-
-  // console.log(country_per_year)
 
   // Dropped USA(really big) & LUX(really small) for visualisation purposes
   delete country_total.USA
   delete country_total.LUX
 
-  var country_totalvalue = Object.values(country_total);
 
+  var country_totalvalue = Object.values(country_total)
   // Assign values to variables to prevent the use of magic numbers
-  var widthSvg = 1000;
-  var heightSvg = 800;
-  var graphwidth = 850;
-  var graphheight = 440;
-  var valuedomain = Math.max.apply(Math, Object.values(country_total));
-  var addSpaceXaxis = 50;
-  var widthcorrection = 10;
+  var widthSvg = 1000
+  var heightSvg = 800
+  var graphwidth = 850
+  var graphheight = 440
+  var valuedomain = Math.max.apply(Math, Object.values(country_total))
+  var addSpaceXaxis = 50
+  var widthcorrection = 10
 
   // Create SVG element
   var svg = d3.select("#barchart")
@@ -65,7 +65,7 @@ d3.json(jsonfile).then(function(data) {
 
   // Create variables for both axis
   var yAxis = d3.axisLeft(scaleYaxis)
-  var xAxis = d3.axisBottom(scaleXaxis);
+  var xAxis = d3.axisBottom(scaleXaxis)
 
   // create hover element for mousehover
   var hover = d3.select("body").append("div")
@@ -102,7 +102,7 @@ d3.json(jsonfile).then(function(data) {
 
 
      .on("click", function(country_totalvalue, index){
-       piechart(Object.keys(country_total)[index]);
+       piechart(Object.keys(country_total)[index])
      });
 
 
@@ -127,9 +127,16 @@ d3.json(jsonfile).then(function(data) {
       .text("Energyuse in KTOE");
 
   function piechart(country_code){
+
+    if (typeof(x) !== "undefined"){
+      console.log(12)
+      d3.select("#piechart").select("svg").remove()
+    }
+    x = true
+
       // set the dimensions and margins of the graph
     var width = 300
-        height = 300
+        height = 400
         margin = 20
 
     // The radius of the pieplot is half the width or half the height (smallest one). I substract a bit of margin.
@@ -145,11 +152,6 @@ d3.json(jsonfile).then(function(data) {
 
     // Create dummy data
     var data = country_per_year[country_code]
-    console.log(data)
-    // // set the color scale
-    // var color = d3.scaleOrdinal()
-    //   .domain(data)
-    //   .range(d3.schemeSet2);
 
     // Compute the position of each group on the pie:
     var pie = d3.pie()
@@ -163,18 +165,14 @@ d3.json(jsonfile).then(function(data) {
       .innerRadius(0)
       .outerRadius(radius)
 
+    //create color range for color representation in bar chart
     var min = Math.min.apply(Math, Object.values(data))
     var max = Math.max.apply(Math, Object.values(data))
-    console.log(min, max)
-
     var myColor = d3.scaleLinear()
-      .domain(min, max)
-      .range(["grey", "green"])
+      .domain([min, max])
+      .range(["red", "darkgreen"])
 
-      svg
-        .exit()
-        .remove()
-    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+    // Build the piehart and add the colors (red is bad & green is good)
     svg
       .selectAll('mySlices')
       .data(data_ready)
@@ -185,9 +183,16 @@ d3.json(jsonfile).then(function(data) {
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
+    svg
+      .append("text")
+      .attr("y", 148 )
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .attr("font-family", "monospace")
+      .text("Country: " + country_code);
 
 
-    // Now add the annotation. Use the centroid method to get the best coordinates
+    // Now add the annotation
     svg
       .selectAll('mySlices')
       .data(data_ready)
@@ -198,12 +203,15 @@ d3.json(jsonfile).then(function(data) {
       .style("text-anchor", "middle")
       .style("font-size", 17)
 
+    // Add a mousehover with some detailed information to the text in the pieslices
       .on("mousemove", function(data_ready, index){
          hover.style("left", d3.event.pageX - addSpaceXaxis + "px")
              .style("top", d3.event.pageY - addSpaceXaxis + "px")
              .style("display", "inline-block")
-             .html(country_code +": " + data_ready.value + " (" + (Math.round(data_ready.value/country_total[country_code]*100)) + "% of total)" );
+             .html("KTOE: " + data_ready.value + " (" + (Math.round(data_ready.value/country_total[country_code]*100)) + "% of total)" );
        })
+
       .on("mouseout", function(e){ hover.style("display", "none");});
+
   }
 });
