@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta charset="utf-8">
   <title>Scatterplot excercise</title>
       <link rel="stylesheet" type="text/css" href="stylefile.css">
@@ -14,9 +15,20 @@
 <body>
   <div class="headertext">
     <h1>Renewable energy use per country</h1>
-    <p>Representation of renewable energyuse per country in kilotonne of oil equivalent (KTOE).</p>
-    <p> * USA was left out for visualisation purposes as its output is 149517 (three thimes larger than Canada!).
+    <p>Representation of renewable energyuse per country in kilotonne of oil equivalent (KTOE) from 2012 tm 2016 .</p>
+    <p> * USA & LUX were left out for visualisation purposes (small & large outliers)</p>
+    <p> Hover over the bars and click on them to get more details</p>
+  </div>
+  <div class="row">
+    <div class="col-sm-7">
+      <div id="barchart"></div>
+    </div>
+    <div class="col-sm-5">
+      <div id="piechart"></div>
+    </div>
   </div>
   <script type="text/javascript" src='scriptfile.js'></script>
+
  </body>
+
 </html>

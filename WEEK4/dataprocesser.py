@@ -9,6 +9,7 @@ def data_from_csv(filename):
     # # Get columns Location, Measure, Time and  Value from csv file
     dataset = pd.read_csv(filename, usecols=['LOCATION', 'MEASURE', 'TIME', 'Value'])
 
+    dataset
     # select wanted data from datasets: Measure value: KTOE in year 2014
     dataset = dataset.loc[dataset['MEASURE'] == 'KTOE']
     dataset = dataset.loc[dataset['TIME'] == 2014]
@@ -18,6 +19,7 @@ def data_from_csv(filename):
     dataset = dataset.dropna(subset=['Value']).drop(dataset['Value'].idxmax())
     dataset['Value'] = dataset['Value'].round()
     dataset.sort_values(['Value'], axis=0, ascending=True, inplace=True)
+    print(dataset)
 
     return(dataset)
 
