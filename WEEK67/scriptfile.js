@@ -191,6 +191,13 @@ d3.json(jsonfile).then(function(data) {
       .attr("font-family", "monospace")
       .text("Country: " + country_code);
 
+      svg
+        .append("text")
+        .attr("y", 165 )
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .attr("font-family", "monospace")
+        .html("Green energyusage per year");
 
     // Now add the annotation
     svg
